@@ -1,0 +1,19 @@
+<%- include('../partials/header', { title: 'Genres' }) %>
+
+<div class="container">
+  <h1 class="page-title">Developers</h1>
+
+  <% if (developers.length > 0) { %>
+  <ul class="ul-list">
+    <% developers.forEach(developer => { %>
+    <li>
+      <a href="/developers/<%= developer.developer_id %>"><%= developer.name %></a>
+    </li>
+    <% }) %>
+  </ul>
+  <% } else { %>
+  <p class="empty-message">No developers available.</p>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

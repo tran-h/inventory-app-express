@@ -1,0 +1,18 @@
+<%- include('../partials/header', { title: 'Games' }) %>
+
+<div class="container">
+  <% if (developer.length > 0) { %>
+  <h1 class="page-title"><%= developer[0].name %></h1>
+  <% } else { %>
+  <p>Developer not found</p>
+  <% } %> <% if (developer.length > 0) { %>
+  <div>
+    <p><strong>Developer:</strong> <%= developer[0].name %></p>
+    <p><strong>Country:</strong> <%= developer[0].country %></p>
+  </div>
+  <% } else { %>
+  <p class="empty-message">No developers available.</p>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
