@@ -1,30 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Video Game Inventory</title>
-  </head>
-  <body>
-    <h1>Welcome to the Video Game Store</h1>
-    <h2>Browse by Genre</h2>
+<%- include('./partials/header', { title: 'Video Game Store' }) %>
 
-    <% if (genres.length > 0) { %>
-    <ul>
-      <% genres.forEach(genre => { %>
-      <li>
-        <a href="/genres/<%= genre.genre_id %>"> <%= genre.name %> </a>
-      </li>
-      <% }) %>
-    </ul>
-    <% } else { %>
-    <p>No genres available.</p>
-    <% } %>
+<div class="container">
+  <h1 class="page-title">Welcome to the Video Game Store</h1>
+  <h2 class="section-title">Browse by Genre</h2>
 
-    <hr />
-    <p>
-      <a href="/genres">Manage Genres</a> |
-      <a href="/video-games">Manage Video Games</a> |
-      <a href="/developers">Manage Developers</a>
-    </p>
-  </body>
-</html>
+  <% if (genres.length > 0) { %>
+  <ul class="genre-list">
+    <% genres.forEach(genre => { %>
+    <li>
+      <a href="/genres/<%= genre.genre_id %>"><%= genre.name %></a>
+    </li>
+    <% }) %>
+  </ul>
+  <% } else { %>
+  <p class="empty-message">No genres available.</p>
+  <% } %>
+</div>
+
+<%- include('./partials/footer') %>
