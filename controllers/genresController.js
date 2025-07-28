@@ -6,7 +6,7 @@ exports.home = async (req, res) => {
     res.render("genres/index", { genres: result.rows });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error loading home page");
+    res.status(500).send("Error loading genres page");
   }
 };
 
@@ -23,6 +23,6 @@ exports.show = async (req, res) => {
     res.render("genres/show", { genre: genre.rows, games: games.rows });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error loading home page");
+    res.status(500).send("Error loading genres page");
   }
 };

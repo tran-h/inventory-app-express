@@ -1,0 +1,28 @@
+<%- include('../partials/header', { title: 'Games' }) %>
+
+<div class="container">
+  <% if (game.length > 0) { %>
+  <h1 class="page-title"><%= game[0].title %></h1>
+  <% } else { %>
+  <p>Game not found</p>
+  <% } %> <% if (game.length > 0) { %>
+  <div>
+    <p><strong>Title:</strong> <%= game[0].title %></p>
+    <p><strong>Release Year:</strong> <%= game[0].release_year %></p>
+    <% if (game[0].price === '0.00') { %>
+    <p><strong>Price:</strong> Free-to-play</p>
+    <% } else { %>
+    <p><strong>Price:</strong> $<%= game[0].price %></p>
+    <% } %>
+    <p>
+      <strong>Genres:</strong>
+      <% const genreNamesString = genres.map(g => g.genre_name).join(', '); %>
+      <%= genreNamesString %>
+    </p>
+  </div>
+  <% } else { %>
+  <p class="empty-message">No games available.</p>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
