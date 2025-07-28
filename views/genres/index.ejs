@@ -1,0 +1,19 @@
+<%- include('../partials/header', { title: 'Genres' }) %>
+
+<div class="container">
+  <h1 class="page-title">Genres</h1>
+
+  <% if (genres.length > 0) { %>
+  <ul class="genre-list">
+    <% genres.forEach(genre => { %>
+    <li>
+      <a href="/genres/<%= genre.genre_id %>"><%= genre.name %></a>
+    </li>
+    <% }) %>
+  </ul>
+  <% } else { %>
+  <p class="empty-message">No genres available.</p>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
