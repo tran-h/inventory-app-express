@@ -1,0 +1,27 @@
+<%- include('../partials/header', { title: 'Genres' }) %>
+
+<div class="container">
+  <% if (genre.length > 0) { %>
+  <h1 class="page-title"><%= genre[0].name %></h1>
+  <% } else { %>
+  <p>Genre not found</p>
+  <% } %> <% if (games.length > 0) { %>
+  <div class="game-grid">
+    <% games.forEach(game => { %>
+    <div class="game-card">
+      <h2><a href="/games/<%= game.game_id %>"><%= game.title %></a></h2>
+      <p><strong>Release Year:</strong> <%= game.release_year %></p>
+      <% if (game.price === '0.00') { %>
+      <p><strong>Price:</strong> Free-to-play</p>
+      <% } else { %>
+      <p><strong>Price:</strong> $<%= game.price %></p>
+      <% } %>
+    </div>
+    <% }) %>
+  </div>
+  <% } else { %>
+  <p class="empty-message">No games available.</p>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

@@ -4,8 +4,6 @@ body {
   padding: 0;
   height: 100%;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
 }
 
 header {
@@ -15,7 +13,7 @@ header {
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -30,18 +28,12 @@ nav a:hover {
   text-decoration: underline;
 }
 
-.content {
-  flex: 1;
-  padding: 1rem;
-}
-
 footer {
   background-color: #f4f4f4;
   text-align: center;
   padding: 1rem;
 }
 
-/* Homepage styling */
 .page-title {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
@@ -53,26 +45,68 @@ footer {
   margin-bottom: 1rem;
 }
 
-.genre-list {
+.ul-list {
   list-style-type: none;
   padding: 0;
 }
 
-.genre-list li {
+.ul-list li {
   margin-bottom: 0.5rem;
 }
 
-.genre-list a {
+.ul-list a {
   font-size: 1.1rem;
   color: #007bff;
   text-decoration: none;
 }
 
-.genre-list a:hover {
+.ul-list a:hover {
   text-decoration: underline;
 }
 
 .empty-message {
   font-style: italic;
   color: #777;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.game-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.game-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.game-card h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.game-card a {
+  text-decoration: none;
+  color: #333;
+}
+
+.game-card a:hover {
+  text-decoration: underline;
+  color: #007bff;
+}
+
+.game-card p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+  color: #555;
 }

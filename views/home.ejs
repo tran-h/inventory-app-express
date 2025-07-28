@@ -5,7 +5,7 @@
   <h2 class="section-title">Browse by Genre</h2>
 
   <% if (genres.length > 0) { %>
-  <ul class="genre-list">
+  <ul class="ul-list">
     <% genres.forEach(genre => { %>
     <li>
       <a href="/genres/<%= genre.genre_id %>"><%= genre.name %></a>
