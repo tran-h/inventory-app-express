@@ -8,6 +8,11 @@
   <% } %> <% if (game.length > 0) { %>
   <div>
     <p><strong>Title:</strong> <%= game[0].title %></p>
+    <p>
+      <strong>Developer:</strong>
+      <% const developerNamesString = developer.map(d => d.name).join(', '); %>
+      <%= developerNamesString %>
+    </p>
     <p><strong>Release Year:</strong> <%= game[0].release_year %></p>
     <% if (game[0].price === '0.00') { %>
     <p><strong>Price:</strong> Free-to-play</p>
