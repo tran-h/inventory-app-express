@@ -4,13 +4,13 @@
   <h1 class="page-title">Games</h1>
 
   <% if (games.length > 0) { %>
-  <ul class="ul-list">
+  <div class="grid-container">
     <% games.forEach(game => { %>
-    <li>
-      <a href="/games/<%= game.game_id %>"><%= game.title %></a>
-    </li>
+    <div class="grid-card">
+      <h2><a href="/games/<%= game.game_id %>"><%= game.title %></a></h2>
+    </div>
     <% }) %>
-  </ul>
+  </div>
   <% } else { %>
   <p class="empty-message">No games available.</p>
   <% } %>

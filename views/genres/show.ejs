@@ -6,9 +6,9 @@
   <% } else { %>
   <p>Genre not found</p>
   <% } %> <% if (games.length > 0) { %>
-  <div class="game-grid">
+  <div class="grid-container">
     <% games.forEach(game => { %>
-    <div class="game-card">
+    <div class="grid-card">
       <h2><a href="/games/<%= game.game_id %>"><%= game.title %></a></h2>
       <p><strong>Release Year:</strong> <%= game.release_year %></p>
       <% if (game.price === '0.00') { %>

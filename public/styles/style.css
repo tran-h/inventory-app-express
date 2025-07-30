@@ -69,14 +69,14 @@ footer {
   color: #777;
 }
 
-.game-grid {
+.grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
-.game-card {
+.grid-card {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -85,27 +85,27 @@ footer {
   transition: box-shadow 0.2s ease;
 }
 
-.game-card:hover {
+.grid-card:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.game-card h2 {
+.grid-card h2 {
   margin-top: 0;
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
 }
 
-.game-card a {
+.grid-card a {
   text-decoration: none;
   color: #333;
 }
 
-.game-card a:hover {
+.grid-card a:hover {
   text-decoration: underline;
   color: #007bff;
 }
 
-.game-card p {
+.grid-card p {
   margin: 0.4rem 0;
   font-size: 0.95rem;
   color: #555;

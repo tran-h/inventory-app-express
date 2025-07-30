@@ -4,13 +4,17 @@
   <h1 class="page-title">Developers</h1>
 
   <% if (developers.length > 0) { %>
-  <ul class="ul-list">
+  <div class="grid-container">
     <% developers.forEach(developer => { %>
-    <li>
-      <a href="/developers/<%= developer.developer_id %>"><%= developer.name %></a>
-    </li>
+    <div class="grid-card">
+      <h2>
+        <a href="/developers/<%= developer.developer_id %>"
+          ><%= developer.name %></a
+        >
+      </h2>
+    </div>
     <% }) %>
-  </ul>
+  </div>
   <% } else { %>
   <p class="empty-message">No developers available.</p>
   <% } %>
