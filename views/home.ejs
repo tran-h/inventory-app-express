@@ -5,13 +5,13 @@
   <h2 class="section-title">Browse by Genre</h2>
 
   <% if (genres.length > 0) { %>
-  <ul class="ul-list">
+  <div class="grid-container">
     <% genres.forEach(genre => { %>
-    <li>
-      <a href="/genres/<%= genre.genre_id %>"><%= genre.name %></a>
-    </li>
+    <div class="grid-card">
+      <h2><a href="/genres/<%= genre.genre_id %>"><%= genre.name %></a></h2>
+    </div>
     <% }) %>
-  </ul>
+  </div>
   <% } else { %>
   <p class="empty-message">No genres available.</p>
   <% } %>
