@@ -1,0 +1,70 @@
+<%- include('../partials/header', { title: "Add New Video Game" }) -%>
+
+<div class="form-wrapper">
+  <h1><%= title %></h1>
+
+  <form action="/games/new" method="POST">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        value="<%= game.title || '' %>"
+      />
+    </div>
+    <div class="form-group">
+      <label for="release_year">Release Year</label>
+      <input
+        type="number"
+        id="release_year"
+        name="release_year"
+        min="1950"
+        max="<%= new Date().getFullYear() %>"
+        value="<%= game.release_year || '' %>"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input
+        type="number"
+        step="0.01"
+        id="price"
+        name="price"
+        min="0"
+        value="<%= game.price ?? '' %>"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="genres">Genres</label>
+      <select name="genres" id="genres" multiple>
+        <% genres.forEach(g => { %>
+          <option value="<%= g.genre_id %>" <%= (selectedGenres || []).includes(g.genre_id.toString()) ? "selected" : "" %>><%= g.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="developers">Developers</label>
+      <select name="developers" id="developers" multiple>
+        <% developers.forEach(d => { %>
+          <option value="<%= d.developer_id %>" <%= (selectedDevelopers || []).includes(d.developer_id.toString()) ? "selected" : "" %>><%= d.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <button type="submit">Add Game</button>
+
+    <% if (errors.length) { %>
+    <div class="error-message">
+      <% errors.forEach(err => { %>
+      <div><%= err.msg %></div>
+      <% }) %>
+    </div>
+    <% } %>
+  </form>
+</div>
+
+<%- include('../partials/footer') -%>

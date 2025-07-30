@@ -1,7 +1,10 @@
 <%- include('../partials/header', { title: 'Video Games' }) %>
 
 <div class="container">
-  <h1 class="page-title">Games</h1>
+  <div class="title-bar">
+    <h1 class="page-title">Video Games</h1>
+    <a href="/games/new" class="create-btn">+ Add New Video Game</a>
+  </div>
 
   <% if (games.length > 0) { %>
   <div class="grid-container">
