@@ -47,7 +47,7 @@ exports.createGenrePost = [
     if (!errors.isEmpty()) {
       return res.render("genres/new", {
         title: "Create Genre",
-        genre: genre,
+        genre,
         errors: errors.array(),
       });
     }

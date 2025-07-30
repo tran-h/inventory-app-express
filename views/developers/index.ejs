@@ -1,7 +1,10 @@
-<%- include('../partials/header', { title: 'Genres' }) %>
+<%- include('../partials/header', { title: 'Developers' }) %>
 
 <div class="container">
-  <h1 class="page-title">Developers</h1>
+  <div class="title-bar">
+    <h1 class="page-title">Developers</h1>
+    <a href="/developers/new" class="create-btn">+ Create New Developer</a>
+  </div>
 
   <% if (developers.length > 0) { %>
   <div class="grid-container">
