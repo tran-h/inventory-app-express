@@ -67,3 +67,79 @@ exports.createDeveloperPost = [
     res.redirect("/developers/");
   },
 ];
+
+exports.editDeveloperGet = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await db.query(
+      "SELECT * FROM developers WHERE developer_id = $1",
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).send("Developer not found");
+    }
+    res.render("developers/edit", {
+      title: "Edit Developer",
+      developer: result.rows[0],
+      errors: [],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading edit developer form");
+  }
+};
+
+exports.editDeveloperPost = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Developer name is required")
+    .custom(async (value, { req }) => {
+      const id = req.params.id;
+      const result = await db.query(
+        "SELECT * FROM developers WHERE name = $1 AND developer_id != $2",
+        [value, id]
+      );
+
+      if (result.rows.length > 0) {
+        throw new Error("Another developer with that name already exists.");
+      }
+
+      return true;
+    }),
+  body("country").trim(),
+
+  async (req, res) => {
+    const id = req.params.id;
+    const errors = validationResult(req);
+
+    const developer = {
+      developer_id: id,
+      name: req.body.name.trim(),
+      country: req.body.country.trim(),
+    };
+
+    if (!errors.isEmpty()) {
+      return res.render("developers/edit", {
+        title: "Edit developer",
+        developer,
+        errors: errors.array(),
+      });
+    }
+
+    try {
+      await db.query(
+        "UPDATE developers SET name = $1 WHERE developer_id = $2",
+        [developer.name, id]
+      );
+      await db.query(
+        "UPDATE developers SET country = $1 WHERE developer_id = $2",
+        [developer.country, id]
+      );
+      res.redirect(`/developers/${id}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error editing developer");
+    }
+  },
+];

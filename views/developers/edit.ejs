@@ -1,0 +1,34 @@
+<%- include('../partials/header', { title: "Edit Developer" }) -%>
+
+<div class="form-wrapper">
+  <h1><%= title %></h1>
+
+  <form action="/developers/<%= developer.developer_id %>/edit" method="POST">
+    <div class="form-group">
+      <label for="name">Developer name</label>
+      <input type="text" id="name" name="name" value="<%= developer.name %>" />
+    </div>
+
+    <div class="form-group">
+      <label for="country">Developer country</label>
+      <input
+        type="text"
+        id="country"
+        name="country"
+        value="<%= developer.country %>"
+      />
+    </div>
+
+    <button type="submit">Update Developer</button>
+
+    <% if (errors.length) { %>
+    <div class="error-message">
+      <% errors.forEach(err => { %>
+      <div><%= err.msg %></div>
+      <% }) %>
+    </div>
+    <% } %>
+  </form>
+</div>
+
+<%- include('../partials/footer') -%>

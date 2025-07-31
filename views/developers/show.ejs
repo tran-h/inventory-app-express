@@ -2,7 +2,14 @@
 
 <div class="container">
   <% if (developer.length > 0) { %>
-  <h1 class="page-title"><%= developer[0].name %></h1>
+  <div class="title-bar">
+    <h1 class="page-title"><%= developer[0].name %></h1>
+    <a
+      href="/developers/<%= developer[0].developer_id %>/edit"
+      class="create-btn"
+      >Edit Developer</a
+    >
+  </div>
   <% } else { %>
   <p>Developer not found</p>
   <% } %> <% if (developer.length > 0) { %>
