@@ -1,8 +1,13 @@
-<%- include('../partials/header', { title: 'Genres' }) %>
+<%- include('../partials/header', { title: genre[0].name }) %>
 
 <div class="container">
   <% if (genre.length > 0) { %>
-  <h1 class="page-title"><%= genre[0].name %></h1>
+  <div class="title-bar">
+    <h1 class="page-title"><%= genre[0].name %></h1>
+    <a href="/genres/<%= genre[0].genre_id %>/edit" class="create-btn"
+      >Edit Genre</a
+    >
+  </div>
   <% } else { %>
   <p>Genre not found</p>
   <% } %> <% if (games.length > 0) { %>

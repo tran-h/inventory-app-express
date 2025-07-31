@@ -1,0 +1,24 @@
+<%- include('../partials/header', { title: "Edit Genre" }) -%>
+
+<div class="form-wrapper">
+  <h1><%= title %></h1>
+
+  <form action="/genres/<%= genre.genre_id %>/edit" method="POST">
+    <div class="form-group">
+      <label for="name">Genre name</label>
+      <input type="text" id="name" name="name" value="<%= genre.name %>" />
+    </div>
+
+    <button type="submit">Update Genre</button>
+
+    <% if (errors.length) { %>
+    <div class="error-message">
+      <% errors.forEach(err => { %>
+      <div><%= err.msg %></div>
+      <% }) %>
+    </div>
+    <% } %>
+  </form>
+</div>
+
+<%- include('../partials/footer') -%>

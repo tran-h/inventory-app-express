@@ -58,3 +58,72 @@ exports.createGenrePost = [
     res.redirect("/genres/");
   },
 ];
+
+exports.editGenreGet = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await db.query("SELECT * FROM genres WHERE genre_id = $1", [
+      id,
+    ]);
+    if (result.rows.length === 0) {
+      return res.status(404).send("Genre not found");
+    }
+    res.render("genres/edit", {
+      title: "Edit Genre",
+      genre: result.rows[0],
+      errors: [],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading edit genre form");
+  }
+};
+
+exports.editGenrePost = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Genre name is required")
+    .custom(async (value, { req }) => {
+      const id = req.params.id;
+      const result = await db.query(
+        "SELECT * FROM genres WHERE name = $1 AND genre_id != $2",
+        [value, id]
+      );
+
+      if (result.rows.length > 0) {
+        throw new Error("Another genre with that name already exists.");
+      }
+
+      return true;
+    }),
+
+  async (req, res) => {
+    const id = req.params.id;
+    const errors = validationResult(req);
+
+    const genre = {
+      genre_id: id,
+      name: req.body.name.trim(),
+    };
+
+    if (!errors.isEmpty()) {
+      return res.render("genres/edit", {
+        title: "Edit Genre",
+        genre,
+        errors: errors.array(),
+      });
+    }
+
+    try {
+      await db.query("UPDATE genres SET name = $1 WHERE genre_id = $2", [
+        genre.name,
+        id,
+      ]);
+      res.redirect(`/genres/${id}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error editing genre");
+    }
+  },
+];
