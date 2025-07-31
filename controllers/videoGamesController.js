@@ -100,11 +100,6 @@ exports.createGamePost = [
       });
     }
 
-    // db.query(
-    //   "INSERT INTO video_games (title, release_year, price) VALUES ($1, $2, $3)",
-    //   [game.title, game.release_year, game.price]
-    // );
-    // res.redirect("/games");
     try {
       const insertGameQuery = `
         INSERT INTO video_games (title, release_year, price)
@@ -136,6 +131,140 @@ exports.createGamePost = [
     } catch (err) {
       console.error(err);
       res.status(500).send("Error saving game");
+    }
+  },
+];
+
+exports.editGameGet = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const gameResult = await db.query(
+      "SELECT * FROM video_games WHERE game_id = $1",
+      [id]
+    );
+    if (gameResult.rows.length === 0) {
+      return res.status(404).send("Game not found");
+    }
+
+    const [allGenres, allDevs, gameGenres, gameDevs] = await Promise.all([
+      db.query("SELECT * FROM genres ORDER BY name"),
+      db.query("SELECT * FROM developers ORDER BY name"),
+      db.query("SELECT genre_id FROM game_genres WHERE game_id = $1", [id]),
+      db.query("SELECT developer_id FROM game_developers WHERE game_id = $1", [
+        id,
+      ]),
+    ]);
+
+    const selectedGenreIds = gameGenres.rows.map((row) => String(row.genre_id));
+    const selectedDevIds = gameDevs.rows.map((row) => String(row.developer_id));
+
+    res.render("videogames/edit", {
+      title: "Edit Game",
+      game: gameResult.rows[0],
+      genres: allGenres.rows,
+      developers: allDevs.rows,
+      selectedGenreIds,
+      selectedDevIds,
+      errors: [],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading edit game form");
+  }
+};
+
+exports.editGamePost = [
+  body("title").trim().notEmpty().withMessage("Title is required."),
+  body("release_year")
+    .isInt({ min: 1950, max: new Date().getFullYear() })
+    .withMessage("Enter a valid year."),
+  body("price")
+    .isFloat({ min: 0 })
+    .withMessage("Price must be a positive number."),
+
+  body("genres").custom((value) => {
+    if (!value || (Array.isArray(value) && value.length === 0)) {
+      throw new Error("At least one genre must be selected.");
+    }
+    return true;
+  }),
+
+  body("developers").custom((value) => {
+    if (!value || (Array.isArray(value) && value.length === 0)) {
+      throw new Error("At least one developer must be selected.");
+    }
+    return true;
+  }),
+
+  async (req, res) => {
+    const id = req.params.id;
+    const errors = validationResult(req);
+
+    const selectedGenres = Array.isArray(req.body.genres)
+      ? req.body.genres.map(String)
+      : req.body.genres
+      ? [String(req.body.genres)]
+      : [];
+
+    const selectedDevelopers = Array.isArray(req.body.developers)
+      ? req.body.developers.map(String)
+      : req.body.developers
+      ? [String(req.body.developers)]
+      : [];
+
+    const game = {
+      game_id: id,
+      title: req.body.title,
+      release_year: req.body.release_year,
+      price: req.body.price,
+    };
+
+    if (!errors.isEmpty()) {
+      const [allGenres, allDevs] = await Promise.all([
+        db.query("SELECT * FROM genres ORDER BY name"),
+        db.query("SELECT * FROM developers ORDER BY name"),
+      ]);
+
+      return res.render("videogames/edit", {
+        title: "Edit Game",
+        game,
+        genres: allGenres.rows,
+        developers: allDevs.rows,
+        selectedGenreIds: selectedGenres,
+        selectedDevIds: selectedDevelopers,
+        errors: errors.array(),
+      });
+    }
+
+    try {
+      await db.query(
+        "UPDATE video_games SET title = $1, release_year = $2, price = $3 WHERE game_id = $4",
+        [game.title, game.release_year, game.price, id]
+      );
+
+      // Clear old associations
+      await db.query("DELETE FROM game_genres WHERE game_id = $1", [id]);
+      await db.query("DELETE FROM game_developers WHERE game_id = $1", [id]);
+
+      // Add new genre/developer links
+      for (const genreId of selectedGenres) {
+        await db.query(
+          "INSERT INTO game_genres (game_id, genre_id) VALUES ($1, $2)",
+          [id, genreId]
+        );
+      }
+
+      for (const devId of selectedDevelopers) {
+        await db.query(
+          "INSERT INTO game_developers (game_id, developer_id) VALUES ($1, $2)",
+          [id, devId]
+        );
+      }
+
+      res.redirect(`/games/${id}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error editing game");
     }
   },
 ];

@@ -2,7 +2,12 @@
 
 <div class="container">
   <% if (game.length > 0) { %>
-  <h1 class="page-title"><%= game[0].title %></h1>
+  <div class="title-bar">
+    <h1 class="page-title"><%= game[0].title %></h1>
+    <a href="/games/<%= game[0].game_id %>/edit" class="create-btn"
+      >Edit Game</a
+    >
+  </div>
   <% } else { %>
   <p>Game not found</p>
   <% } %> <% if (game.length > 0) { %>
