@@ -17,8 +17,7 @@ CREATE TABLE video_games (
     game_id       SERIAL PRIMARY KEY,
     title         TEXT NOT NULL,
     release_year  INTEGER NOT NULL CHECK (release_year >= 1950 AND release_year <= EXTRACT(YEAR FROM CURRENT_DATE)),
-    price         NUMERIC(10,2) CHECK (price >= 0),
-    stock_count   INTEGER DEFAULT 0 CHECK (stock_count >= 0)
+    price         NUMERIC(10,2) CHECK (price >= 0)
 );
 
 CREATE TABLE game_genres (
