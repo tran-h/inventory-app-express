@@ -7,6 +7,8 @@ router.get("/new", genreController.createGenreGet);
 router.post("/new", genreController.createGenrePost);
 router.get("/:id/edit", genreController.editGenreGet);
 router.post("/:id/edit", genreController.editGenrePost);
+router.get('/:id/delete', genreController.deleteGenreGet);
+router.post('/:id/delete', genreController.deleteGenrePost);
 router.get("/:id", genreController.show);
 
 module.exports = router;

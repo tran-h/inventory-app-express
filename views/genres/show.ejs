@@ -4,9 +4,14 @@
   <% if (genre.length > 0) { %>
   <div class="title-bar">
     <h1 class="page-title"><%= genre[0].name %></h1>
-    <a href="/genres/<%= genre[0].genre_id %>/edit" class="create-btn"
-      >Edit Genre</a
-    >
+    <div>
+      <a href="/genres/<%= genre[0].genre_id %>/edit" class="create-btn"
+        >Edit Genre</a
+      >
+      <a href="/genres/<%= genre[0].genre_id %>/delete" class="create-btn"
+        >Delete Genre</a
+      >
+    </div>
   </div>
   <% } else { %>
   <p>Genre not found</p>

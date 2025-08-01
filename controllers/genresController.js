@@ -127,3 +127,57 @@ exports.editGenrePost = [
     }
   },
 ];
+
+exports.deleteGenreGet = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const [genreResult, gameResult] = await Promise.all([
+      db.query("SELECT * FROM genres WHERE genre_id = $1", [id]),
+      db.query(
+        `
+        SELECT vg.game_id, vg.title
+        FROM video_games vg
+        JOIN game_genres gg ON vg.game_id = gg.game_id
+        WHERE gg.genre_id = $1
+      `,
+        [id]
+      ),
+    ]);
+
+    if (genreResult.rows.length === 0) {
+      return res.status(404).send("Genre not found");
+    }
+
+    res.render("genres/delete", {
+      title: "Delete Genre",
+      genre: genreResult.rows[0],
+      associatedGames: gameResult.rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error getting genre(s)/game(s) to delete");
+  }
+};
+
+exports.deleteGenrePost = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    // Double-check if genre exists
+    const result = await db.query("SELECT * FROM genres WHERE genre_id = $1", [
+      id,
+    ]);
+    if (result.rows.length === 0) {
+      return res.status(404).send("Genre not found");
+    }
+
+    // Delete genre (will also remove from game_genres since ON DELETE CASCADE is set)
+    await db.query("DELETE FROM genres WHERE genre_id = $1", [id]);
+
+    res.redirect("/genres");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Could not delete genre (possibly still referenced).");
+  }
+};
