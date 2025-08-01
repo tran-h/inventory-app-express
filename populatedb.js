@@ -7,7 +7,10 @@ const connectionString = isRemote
   ? process.env.DATABASE_URL_REMOTE
   : process.env.DATABASE_URL_LOCAL;
 
-const client = new Client({ connectionString });
+const client = new Client({
+  connectionString,
+  ssl: isRemote ? { rejectUnauthorized: false } : false,
+});
 
 async function seed() {
   try {
