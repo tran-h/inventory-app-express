@@ -2,6 +2,8 @@
 
 A full-stack web application for managing a collection of video games, including their genres and developers. Built using **Node.js**, **Express**, **PostgreSQL**, and **EJS**, this app demonstrates full CRUD operations, relational data handling, and deployment on **Render**.
 
+[Live Demo](https://inventory-app-express.onrender.com/)
+
 ## Features
 
 - Create, read, update, and delete video games, genres, and developers
