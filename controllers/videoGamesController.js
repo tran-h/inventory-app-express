@@ -69,8 +69,18 @@ exports.createGamePost = [
     .isFloat({ min: 0 })
     .withMessage("Price must be a non-negative number")
     .toFloat(),
-  body("genres", "At least one genre is required").isArray({ min: 1 }),
-  body("developers", "At least one developer is required").isArray({ min: 1 }),
+  body("genres").custom((value) => {
+    if (!value) throw new Error("At least one genre is required.");
+    if (Array.isArray(value) && value.length > 0) return true;
+    if (typeof value === "string" && value.trim() !== "") return true;
+    throw new Error("At least one genre is required.");
+  }),
+  body("developers").custom((value) => {
+    if (!value) throw new Error("At least one developer is required.");
+    if (Array.isArray(value) && value.length > 0) return true;
+    if (typeof value === "string" && value.trim() !== "") return true;
+    throw new Error("At least one developer is required.");
+  }),
 
   async (req, res) => {
     const errors = validationResult(req);
@@ -81,8 +91,16 @@ exports.createGamePost = [
       price: req.body.price || null,
     };
 
-    const selectedGenres = req.body.genres || [];
-    const selectedDevelopers = req.body.developers || [];
+    const selectedGenres = Array.isArray(req.body.genres)
+      ? req.body.genres
+      : req.body.genres
+      ? [req.body.genres]
+      : [];
+    const selectedDevelopers = Array.isArray(req.body.developers)
+      ? req.body.developers
+      : req.body.developers
+      ? [req.body.developers]
+      : [];
 
     if (!errors.isEmpty()) {
       const [genresResult, developersResult] = await Promise.all([
