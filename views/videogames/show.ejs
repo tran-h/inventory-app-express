@@ -4,9 +4,14 @@
   <% if (game.length > 0) { %>
   <div class="title-bar">
     <h1 class="page-title"><%= game[0].title %></h1>
-    <a href="/games/<%= game[0].game_id %>/edit" class="create-btn"
-      >Edit Game</a
-    >
+    <div>
+      <a href="/games/<%= game[0].game_id %>/edit" class="create-btn"
+        >Edit Game</a
+      >
+      <a href="/games/<%= game[0].game_id %>/delete" class="create-btn"
+        >Delete Game</a
+      >
+    </div>
   </div>
   <% } else { %>
   <p>Game not found</p>

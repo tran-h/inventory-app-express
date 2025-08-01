@@ -268,3 +268,68 @@ exports.editGamePost = [
     }
   },
 ];
+
+exports.deleteGameGet = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [gameResult, genresResult, devsResult] = await Promise.all([
+      db.query("SELECT * FROM video_games WHERE game_id = $1", [id]),
+      db.query(
+        `
+        SELECT g.name FROM genres g
+        JOIN game_genres gg ON g.genre_id = gg.genre_id
+        WHERE gg.game_id = $1
+      `,
+        [id]
+      ),
+      db.query(
+        `
+        SELECT d.name FROM developers d
+        JOIN game_developers gd ON d.developer_id = gd.developer_id
+        WHERE gd.game_id = $1
+      `,
+        [id]
+      ),
+    ]);
+
+    if (gameResult.rows.length === 0) {
+      return res.status(404).send("Game not found");
+    }
+
+    res.render("videogames/delete", {
+      title: "Delete Game",
+      game: gameResult.rows[0],
+      genres: genresResult.rows,
+      developers: devsResult.rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .send("Error getting game(s)/genre(s)/developer(s) to delete");
+  }
+};
+
+exports.deleteGamePost = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Double-check if game exists
+    const result = await db.query(
+      "SELECT * FROM video_games WHERE game_id = $1",
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).send("Game not found");
+    }
+
+    // Delete game (will also remove from game_genres/game_developers since ON DELETE CASCADE is set)
+    await db.query("DELETE FROM video_games WHERE game_id = $1", [id]);
+
+    res.redirect("/games");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Could not delete game (possibly still referenced).");
+  }
+};
