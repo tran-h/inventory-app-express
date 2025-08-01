@@ -143,3 +143,60 @@ exports.editDeveloperPost = [
     }
   },
 ];
+
+exports.deleteDeveloperGet = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const [developerResult, gameResult] = await Promise.all([
+      db.query("SELECT * FROM developers WHERE developer_id = $1", [id]),
+      db.query(
+        `
+        SELECT vg.game_id, vg.title
+        FROM video_games vg
+        JOIN game_developers gd ON vg.game_id = gd.game_id
+        WHERE gd.developer_id = $1
+      `,
+        [id]
+      ),
+    ]);
+
+    if (developerResult.rows.length === 0) {
+      return res.status(404).send("Developer not found");
+    }
+
+    res.render("developers/delete", {
+      title: "Delete Developer",
+      developer: developerResult.rows[0],
+      associatedGames: gameResult.rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error getting developer(s)/game(s) to delete");
+  }
+};
+
+exports.deleteDeveloperPost = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    // Double-check if developer exists
+    const result = await db.query(
+      "SELECT * FROM developers WHERE developer_id = $1",
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).send("Developer not found");
+    }
+
+    // Delete developer (will also remove from game_developers since ON DELETE CASCADE is set)
+    await db.query("DELETE FROM developers WHERE developer_id = $1", [id]);
+
+    res.redirect("/developers");
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .send("Could not delete developer (possibly still referenced).");
+  }
+};

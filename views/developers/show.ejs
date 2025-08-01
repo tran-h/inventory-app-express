@@ -4,11 +4,18 @@
   <% if (developer.length > 0) { %>
   <div class="title-bar">
     <h1 class="page-title"><%= developer[0].name %></h1>
-    <a
-      href="/developers/<%= developer[0].developer_id %>/edit"
-      class="create-btn"
-      >Edit Developer</a
-    >
+    <div>
+      <a
+        href="/developers/<%= developer[0].developer_id %>/edit"
+        class="create-btn"
+        >Edit Developer</a
+      >
+      <a
+        href="/developers/<%= developer[0].developer_id %>/delete"
+        class="create-btn"
+        >Delete Developer</a
+      >
+    </div>
   </div>
   <% } else { %>
   <p>Developer not found</p>

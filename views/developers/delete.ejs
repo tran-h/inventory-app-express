@@ -1,0 +1,28 @@
+<%- include('../partials/header', { title: "Delete Developer" }) -%>
+
+<div class="container">
+  <div class="title-bar">
+    <h1><%= title %></h1>
+  </div>
+
+  <p>Are you sure you want to delete the developer "<%= developer.name %>"?</p>
+
+  <% if (associatedGames.length > 0) { %>
+  <p>This developer is associated with the following games:</p>
+  <ul>
+    <% associatedGames.forEach(game => { %>
+    <li><%= game.title %></li>
+    <% }) %>
+  </ul>
+  <p><strong>You will also remove this developer from those games.</strong></p>
+  <% } %>
+
+  <form method="POST" action="/developers/<%= developer.developer_id %>/delete">
+    <button type="submit">Confirm Delete</button>
+    <a href="/developers/<%= developer.developer_id %>" class="create-btn"
+      >Cancel</a
+    >
+  </form>
+</div>
+
+<%- include('../partials/footer') -%>
