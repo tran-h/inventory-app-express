@@ -1,5 +1,36 @@
 # inventory-app-express
 
+A full-stack web application for managing a collection of video games, including their genres and developers. Built using **Node.js**, **Express**, **PostgreSQL**, and **EJS**, this app demonstrates full CRUD operations, relational data handling, and deployment on **Render**.
+
+## Features
+
+- Create, read, update, and delete video games, genres, and developers
+- Associate games with multiple genres
+- Associate games with multiple developers
+- Form validation with user-friendly error messages
+- Hosted backend and database using Render
+- Seed script to populate the database with sample data
+
+## Technologies Used
+
+- **Node.js** + **Express** – Web server and routing
+- **PostgreSQL** – Relational database
+- **pg** – PostgreSQL client for Node.js
+- **EJS** – Templating engine for dynamic HTML rendering
+- **dotenv** – Environment variable management
+- **Render** – Free cloud hosting for backend and PostgreSQL
+
+## What I Learned
+
+This project helped me:
+
+- Understand relational database design with foreign key constraints
+- Work with many-to-many relationships using join tables
+- Use express-validator to validate and sanitize form inputs
+- Perform full CRUD operations with proper RESTful routing
+- Deploy both backend and PostgreSQL on a cloud platform (Render)
+- Use psql and .env to manage local and remote environments
+
 ## Database Table Schemas
 ```
 CREATE TABLE genres (
